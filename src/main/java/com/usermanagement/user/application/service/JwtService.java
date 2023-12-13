@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -32,16 +31,8 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(JwtPayload jwtPayload) {
-        return generateToken(new HashMap<>(), jwtPayload);
-    }
-
     public String generateToken(Map<String, Object> extraClaims, JwtPayload jwtPayload) {
         return buildToken(extraClaims, jwtPayload, jwtExpiration);
-    }
-
-    public long getExpirationTime() {
-        return jwtExpiration;
     }
 
     private String buildToken(
@@ -57,11 +48,6 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public boolean isTokenValid(String token, JwtPayload jwtPayload) {
-        final String email = extractEmail(token);
-        return (email.equals(jwtPayload.getEmail())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
