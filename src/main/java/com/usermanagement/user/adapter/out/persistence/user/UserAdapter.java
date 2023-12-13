@@ -4,6 +4,7 @@ import com.usermanagement.user.adapter.out.persistence.phonenumber.PhoneNumberMa
 import com.usermanagement.user.application.port.out.UserPort;
 import com.usermanagement.user.domain.PhoneNumber;
 import com.usermanagement.user.domain.User;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserAdapter implements UserPort {
+
+    private final Logger log = Logger.getLogger(UserAdapter.class);
 
     private final UserRepository userRepository;
 
@@ -39,7 +42,12 @@ public class UserAdapter implements UserPort {
         userEntity.setToken(token);
         userEntity.setIsActive(true);
 
-        userRepository.save(userEntity);
+        log.info("Adapter: saving userEntity...");
+        try {
+            userRepository.save(userEntity);
+        } catch (Exception e) {
+            log.error("Adapter: error saving userEntity: " + e.getMessage());
+        }
 
         return new User(
                 userEntity.getId(),

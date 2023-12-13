@@ -2,10 +2,7 @@ package com.usermanagement.user.adapter.in.web;
 
 
 import com.usermanagement.user.domain.PhoneNumber;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CreateUserBody {
     private String name;
     private String email;

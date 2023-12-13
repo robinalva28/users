@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import static com.usermanagement.user.application.port.in.CreateUserUseCase.Crea
 @Tag(name = "Users")
 public class CreateUserController {
 
+    private final Logger log = Logger.getLogger(CreateUserController.class);
     private final CreateUserUseCase createUserUserCase;
 
     @Autowired
@@ -46,7 +49,10 @@ public class CreateUserController {
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class)))
             })
-    public UserView create(@RequestBody CreateUserBody createUserBody) {
+    public ResponseEntity<UserView> create(@RequestBody CreateUserBody createUserBody) {
+
+        log.info("POST /users -> createUserUserCase... creating with email: ".concat(createUserBody.getEmail()));
+
         CreateUserCommand createUserCommand = new CreateUserCommand(
                 createUserBody.getName(),
                 createUserBody.getEmail(),
@@ -67,6 +73,7 @@ public class CreateUserController {
         view.setActive(result.isActive());
         view.setPhones(result.getPhones());
 
-        return view;
+        log.info("POST /users -> createUserUserCase... DONE");
+        return ResponseEntity.status(201).body(view);
     }
 }

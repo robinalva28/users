@@ -17,7 +17,6 @@ public class UserView {
 
     private String name;
     private String email;
-    private String password;
     private String id;
     private LocalDateTime created;
     private LocalDateTime modified;
