@@ -1,4 +1,4 @@
-package com.usermanagement.user.adapter.web.in;
+package com.usermanagement.user.adapter.in.web;
 
 
 import com.usermanagement.user.domain.PhoneNumber;
