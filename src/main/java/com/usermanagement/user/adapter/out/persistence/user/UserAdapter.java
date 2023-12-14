@@ -47,6 +47,7 @@ public class UserAdapter implements UserPort {
             userRepository.save(userEntity);
         } catch (Exception e) {
             log.error("Adapter: error saving userEntity: " + e.getMessage());
+            throw e;
         }
 
         return new User(

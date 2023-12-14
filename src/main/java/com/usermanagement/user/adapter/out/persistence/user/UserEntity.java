@@ -42,8 +42,15 @@ public class UserEntity {
     private LocalDateTime lastLogin;
 
     private String token;
+
+    @Column(name = "isactive")
     private Boolean isActive;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_phone",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "phone_id")
+    )
     private List<PhoneNumberEntity> phones;
 }
