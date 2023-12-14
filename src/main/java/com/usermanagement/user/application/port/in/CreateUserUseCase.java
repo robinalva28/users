@@ -30,8 +30,6 @@ public interface CreateUserUseCase {
         private String email;
 
         @NotBlank(message = "is required")
-        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&._-])[A-Za-z\\d@$!%*#?&._-]{5,}$",
-                message = "must have at least 5 characters, 1 letter, 1 number, 1 special character")
         private String password;
 
         private List<PhoneNumber> phones;
@@ -44,5 +42,4 @@ public interface CreateUserUseCase {
             this.validateSelf();
         }
     }
-
 }

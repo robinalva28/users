@@ -95,6 +95,26 @@ class UserServiceTest {
         );
 
     }
+    @Test
+    void createPasswordFormatError() {
 
+        // Given
+        var command = new UserService.CreateUserCommand(
+                "name",
+                "mail@dom.com",
+                "password",
+                new ArrayList<>(List.of(new PhoneNumber("number", "city", "country")))
+        );
 
+        // When
+        when(userPort.existsByEmail(command.getEmail())).thenReturn(false);
+
+        // Then
+
+        Assertions.assertThrows(
+                com.usermanagement.user.common.exceptions.BadRequestException.class,
+                () -> service.create(command)
+        );
+
+    }
 }
