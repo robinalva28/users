@@ -29,4 +29,12 @@ public class GeneralExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        log.error(e.getMessage());
+        return ResponseEntity.status(500).body(errorResponse);
+    }
+
 }

@@ -47,6 +47,10 @@ public class CreateUserController {
                     @ApiResponse(responseCode = "409", description = "Conflict",
                             content = @Content(
                                     mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class)))
             })
     public ResponseEntity<UserView> create(@RequestBody CreateUserBody createUserBody) {

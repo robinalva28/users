@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS user_phone;
+DROP TABLE IF EXISTS phone_numbers;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
                        id UUID PRIMARY KEY,
                        name VARCHAR(255),
