@@ -37,4 +37,12 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(500).body(errorResponse);
     }
 
+    @ExceptionHandler(value = {BadRequestException.class})
+    public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException e) {
+
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        log.error(e.getMessage());
+        return ResponseEntity.status(400).body(errorResponse);
+    }
+
 }
