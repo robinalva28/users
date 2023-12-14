@@ -1,5 +1,6 @@
 package com.usermanagement.user.adapter.out.persistence.user;
 
+import com.sun.jdi.InternalException;
 import com.usermanagement.user.adapter.out.persistence.phonenumber.PhoneNumberMapper;
 import com.usermanagement.user.application.port.out.UserPort;
 import com.usermanagement.user.domain.PhoneNumber;
@@ -21,16 +22,20 @@ public class UserAdapter implements UserPort {
 
     private final PhoneNumberMapper phoneNumberMapper;
 
+    private final UserMapper userMapper;
+
     @Autowired
-    UserAdapter(UserRepository userRepository, PhoneNumberMapper phoneNumberMapper) {
+    UserAdapter(UserRepository userRepository, PhoneNumberMapper phoneNumberMapper, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.phoneNumberMapper = phoneNumberMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
     public User createUser(String name, String email, String password, List<PhoneNumber> phoneNumbers, String token) {
 
         UserEntity userEntity = new UserEntity();
+        UserEntity userResult;
 
         userEntity.setName(name);
         userEntity.setEmail(email);
@@ -44,24 +49,14 @@ public class UserAdapter implements UserPort {
 
         log.info("Adapter: saving userEntity...");
         try {
-            userRepository.save(userEntity);
+            userResult = userRepository.save(userEntity);
         } catch (Exception e) {
             log.error("Adapter: error saving userEntity: " + e.getMessage());
-            throw e;
+            throw new InternalException("Internal server error");
         }
+        log.info("Adapter: userEntity saved successfully");
 
-        return new User(
-                userEntity.getId(),
-                userEntity.getName(),
-                userEntity.getEmail(),
-                userEntity.getPassword(),
-                userEntity.getCreated(),
-                userEntity.getModified(),
-                userEntity.getLastLogin(),
-                userEntity.getToken(),
-                userEntity.getIsActive(),
-                userEntity.getPhones().stream().map(phoneNumberMapper::entityToDomain).collect(Collectors.toList())
-        );
+        return userMapper.entityToDomain(userResult);
     }
 
     @Override
