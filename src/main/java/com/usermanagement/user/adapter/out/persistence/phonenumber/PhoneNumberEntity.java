@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "phone_numbers")
 @Setter
 @Getter
 @AllArgsConstructor
